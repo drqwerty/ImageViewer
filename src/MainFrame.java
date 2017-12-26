@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ import javax.swing.JPanel;
 public class MainFrame extends JFrame {
 
     private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, JButton> buttons = new HashMap<>();
     private ImageDisplay imageDisplay;
 
     public MainFrame() {
@@ -50,11 +53,14 @@ public class MainFrame extends JFrame {
 
     private Component button(String name) {
         JButton button = new JButton(name);
-        button.addActionListener(execute());
+        button.addActionListener(executeClick());
+        button.setFocusPainted(false);
+        button.addKeyListener(executeKey());
+        buttons.put(name, button);
         return button;
     }
 
-    private ActionListener execute() {
+    private ActionListener executeClick() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,4 +68,38 @@ public class MainFrame extends JFrame {
             }
         };
     }
+    
+    private KeyAdapter executeKey() {
+        return new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                if (keyCode == 37) (buttons.get("←")).doClick();
+                if (keyCode == 39) (buttons.get("→")).doClick();
+            }
+        };
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
